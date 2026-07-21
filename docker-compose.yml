@@ -1,0 +1,33 @@
+# Production-style stack: the app behind a Postgres database.
+# For Postgres, set the datasource provider to "postgresql" in
+# prisma/schema.prisma, then: docker compose up --build
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: merchant
+      POSTGRES_PASSWORD: merchant
+      POSTGRES_DB: merchantops
+    ports:
+      - '5432:5432'
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U merchant']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://merchant:merchant@db:5432/merchantops
+      AUTH_SECRET: change-me-in-production
+    ports:
+      - '3000:3000'
+
+volumes:
+  dbdata:

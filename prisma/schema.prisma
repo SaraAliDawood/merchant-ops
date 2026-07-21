@@ -1,0 +1,83 @@
+// Prisma schema — merchant order-operations platform.
+// SQLite by default for zero-config local runs; swap `provider` to "postgresql"
+// (and DATABASE_URL) for production without changing any model.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  STAFF
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  FULFILLED
+  CANCELLED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         Role     @default(STAFF)
+  createdAt    DateTime @default(now())
+  orders       Order[]  @relation("CreatedBy")
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  createdAt DateTime @default(now())
+  orders    Order[]
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  sku         String      @unique
+  name        String
+  // Stored in minor units (fils/cents) to avoid floating-point money bugs.
+  priceCents  Int
+  currency    String      @default("AED")
+  active      Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  orderItems  OrderItem[]
+}
+
+model Order {
+  id           String      @id @default(cuid())
+  reference    String      @unique
+  status       OrderStatus @default(PENDING)
+  customer     Customer    @relation(fields: [customerId], references: [id])
+  customerId   String
+  createdBy    User        @relation("CreatedBy", fields: [createdById], references: [id])
+  createdById  String
+  currency     String      @default("AED")
+  // Denormalized total (minor units) computed from items at write time.
+  totalCents   Int         @default(0)
+  createdAt    DateTime    @default(now())
+  items        OrderItem[]
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id             String  @id @default(cuid())
+  order          Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId        String
+  product        Product @relation(fields: [productId], references: [id])
+  productId      String
+  quantity       Int
+  // Snapshot of unit price at time of sale (minor units).
+  unitPriceCents Int
+}
