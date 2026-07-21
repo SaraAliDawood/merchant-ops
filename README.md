@@ -1,5 +1,11 @@
 # MerchantOps — Order Operations Platform
 
+[![CI](https://github.com/SaraAliDawood/merchant-ops/actions/workflows/ci.yml/badge.svg)](https://github.com/SaraAliDawood/merchant-ops/actions/workflows/ci.yml)
+![Next.js](https://img.shields.io/badge/Next.js-15-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+![Tests](https://img.shields.io/badge/tests-Vitest-green)
+![License](https://img.shields.io/badge/license-MIT-lightgrey)
+
 A full-stack merchant **order-operations** platform: authenticate, manage products,
 create and track orders through a status workflow, and monitor revenue on a live
 dashboard. Built to demonstrate **production-grade full-stack engineering** —
