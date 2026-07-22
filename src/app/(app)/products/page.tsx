@@ -14,40 +14,41 @@ export default async function ProductsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-ink">Products</h1>
+      <div className="flex items-end justify-between">
+        <div>
+          <p className="text-xs font-medium uppercase tracking-widest text-indigo-500">Catalog</p>
+          <h1 className="mt-1 font-display text-2xl font-bold text-slate-900">Products</h1>
+        </div>
         {isAdmin && <NewProductForm />}
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
-        <table className="w-full text-sm">
-          <thead className="text-left text-xs uppercase text-slate-400">
-            <tr>
-              <th className="px-6 py-3">SKU</th>
-              <th className="px-6 py-3">Name</th>
-              <th className="px-6 py-3">Price</th>
-              <th className="px-6 py-3">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((p) => (
-              <tr key={p.id} className="border-t border-slate-100">
-                <td className="px-6 py-3 font-mono text-xs">{p.sku}</td>
-                <td className="px-6 py-3">{p.name}</td>
-                <td className="px-6 py-3 font-medium">{formatMoney(p.priceCents, p.currency)}</td>
-                <td className="px-6 py-3">
-                  <span
-                    className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                      p.active ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600'
-                    }`}
-                  >
-                    {p.active ? 'Active' : 'Inactive'}
-                  </span>
-                </td>
+      <div className="card overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-left text-[11px] uppercase tracking-wider text-slate-400">
+                <th className="px-6 py-3 font-medium">SKU</th>
+                <th className="px-6 py-3 font-medium">Name</th>
+                <th className="px-6 py-3 font-medium">Price</th>
+                <th className="px-6 py-3 font-medium">Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {products.map((p) => (
+                <tr key={p.id} className="border-t border-slate-100 transition hover:bg-slate-50/70">
+                  <td className="px-6 py-3 font-mono text-xs text-slate-500">{p.sku}</td>
+                  <td className="px-6 py-3 text-slate-700">{p.name}</td>
+                  <td className="px-6 py-3 font-medium text-slate-900">{formatMoney(p.priceCents, p.currency)}</td>
+                  <td className="px-6 py-3">
+                    <span className={`badge ${p.active ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-500'}`}>
+                      {p.active ? 'Active' : 'Inactive'}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

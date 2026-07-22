@@ -1,11 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  color-scheme: light;
-}
+:root { color-scheme: light; }
 
 body {
-  @apply bg-slate-50 text-slate-900 antialiased;
+  @apply text-slate-800;
+  font-family: 'Inter', system-ui, sans-serif;
+  background:
+    radial-gradient(900px 500px at 100% -5%, rgba(99, 102, 241, 0.06), transparent 55%),
+    radial-gradient(700px 500px at -5% 105%, rgba(236, 72, 153, 0.05), transparent 55%),
+    #f7f8fb;
+  min-height: 100vh;
+}
+
+h1, h2, h3, .font-display { font-family: 'Sora', sans-serif; letter-spacing: -0.01em; }
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all duration-300;
+  }
+  .card-hover:hover {
+    @apply border-indigo-200 -translate-y-0.5;
+    box-shadow: 0 20px 40px -24px rgba(79, 70, 229, 0.35);
+  }
+  .input {
+    @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800
+           placeholder:text-slate-400 outline-none transition
+           focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/10;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold text-white
+           bg-gradient-to-r from-indigo-500 to-violet-500 transition
+           hover:shadow-[0_12px_28px_-8px_rgba(99,102,241,0.55)] hover:brightness-105
+           focus:ring-4 focus:ring-indigo-500/25 disabled:opacity-60;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm
+           text-slate-600 transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 focus:ring-4 focus:ring-slate-200;
+  }
+  .badge { @apply rounded-full px-2.5 py-0.5 text-[11px] font-medium tracking-wide; }
 }

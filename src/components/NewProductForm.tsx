@@ -19,17 +19,9 @@ export default function NewProductForm() {
       const res = await fetch('/api/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          sku: form.sku,
-          name: form.name,
-          priceCents: toCents(form.price),
-          currency: form.currency,
-        }),
+        body: JSON.stringify({ sku: form.sku, name: form.name, priceCents: toCents(form.price), currency: form.currency }),
       });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error ?? 'Could not create product.');
-      }
+      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.error ?? 'Could not create product.'); }
       setForm({ sku: '', name: '', price: '', currency: 'AED' });
       setOpen(false);
       router.refresh();
@@ -40,73 +32,25 @@ export default function NewProductForm() {
     }
   }
 
-  if (!open) {
-    return (
-      <button
-        onClick={() => setOpen(true)}
-        className="rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-      >
-        + New product
-      </button>
-    );
-  }
+  if (!open) return <button onClick={() => setOpen(true)} className="btn-primary">+ New product</button>;
 
   return (
-    <form
-      onSubmit={submit}
-      className="flex flex-wrap items-end gap-3 rounded-xl border border-slate-200 bg-white p-4"
-    >
+    <form onSubmit={submit} className="card flex w-full flex-wrap items-end gap-3 p-4">
       <Input label="SKU" value={form.sku} onChange={(v) => setForm({ ...form, sku: v })} />
       <Input label="Name" value={form.name} onChange={(v) => setForm({ ...form, name: v })} wide />
-      <Input
-        label="Price"
-        value={form.price}
-        onChange={(v) => setForm({ ...form, price: v })}
-        type="number"
-      />
-      <button
-        type="submit"
-        disabled={busy}
-        className="rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-60"
-      >
-        {busy ? 'Saving…' : 'Save'}
-      </button>
-      <button
-        type="button"
-        onClick={() => setOpen(false)}
-        className="rounded-lg border border-slate-300 px-4 py-2 text-sm"
-      >
-        Cancel
-      </button>
-      {error && <p className="w-full text-sm text-red-600">{error}</p>}
+      <Input label="Price" value={form.price} onChange={(v) => setForm({ ...form, price: v })} type="number" />
+      <button type="submit" disabled={busy} className="btn-primary">{busy ? 'Saving…' : 'Save'}</button>
+      <button type="button" onClick={() => setOpen(false)} className="btn-ghost">Cancel</button>
+      {error && <p className="w-full text-sm text-rose-600">{error}</p>}
     </form>
   );
 }
 
-function Input({
-  label,
-  value,
-  onChange,
-  type = 'text',
-  wide,
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-  type?: string;
-  wide?: boolean;
-}) {
+function Input({ label, value, onChange, type = 'text', wide }: { label: string; value: string; onChange: (v: string) => void; type?: string; wide?: boolean }) {
   return (
-    <label className={wide ? 'flex-1' : ''}>
-      <span className="mb-1 block text-xs font-medium text-slate-600">{label}</span>
-      <input
-        type={type}
-        step="0.01"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        required
-        className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-      />
+    <label className={wide ? 'flex-1 min-w-[160px]' : ''}>
+      <span className="mb-1.5 block text-xs font-medium text-slate-600">{label}</span>
+      <input type={type} step="0.01" value={value} onChange={(e) => onChange(e.target.value)} required className="input" />
     </label>
   );
 }
