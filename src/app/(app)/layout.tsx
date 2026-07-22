@@ -16,7 +16,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/70 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
+        <div className="mx-auto flex w-[88%] max-w-[1600px] items-center justify-between py-3">
           <div className="flex items-center gap-6">
             <span className="flex items-center gap-2 font-display font-bold text-slate-900">
               <span className="grid h-7 w-7 place-items-center rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 text-sm text-white">M</span>
@@ -40,7 +40,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           </div>
         </div>
       </header>
-      <main className="mx-auto max-w-6xl px-5 py-8">{children}</main>
+      <main className="mx-auto w-[88%] max-w-[1600px] py-8">{children}</main>
     </div>
   );
 }
