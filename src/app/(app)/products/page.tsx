@@ -14,13 +14,12 @@ export default async function ProductsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-end justify-between">
-        <div>
-          <p className="text-xs font-medium uppercase tracking-widest text-indigo-500">Catalog</p>
-          <h1 className="mt-1 font-display text-2xl font-bold text-slate-900">Products</h1>
-        </div>
-        {isAdmin && <NewProductForm />}
+      <div>
+        <p className="text-xs font-medium uppercase tracking-widest text-indigo-500">Catalog</p>
+        <h1 className="mt-1 font-display text-2xl font-bold text-slate-900">Products</h1>
       </div>
+
+      {isAdmin && <NewProductForm />}
 
       <div className="card overflow-hidden">
         <div className="overflow-x-auto">
